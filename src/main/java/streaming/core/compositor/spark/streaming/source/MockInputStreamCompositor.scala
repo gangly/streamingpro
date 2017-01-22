@@ -29,6 +29,7 @@ class MockInputStreamCompositor[T] extends Compositor[T] {
   }
 
   override def result(alg: util.List[Processor[T]], ref: util.List[Strategy[T]], middleResult: util.List[T], params: util.Map[Any, Any]): util.List[T] = {
+    val ssctmp = params.get("_runtime_")
     val ssc = params.get("_runtime_").asInstanceOf[SparkStreamingRuntime].streamingContext
     List((new TestInputStream[String](ssc, data, 1)).asInstanceOf[T])
   }

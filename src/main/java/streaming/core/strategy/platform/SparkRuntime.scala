@@ -11,8 +11,8 @@ import streaming.common.ParamsHelper._
 import scala.collection.JavaConversions._
 
 /**
- * 5/11/16 WilliamZhu(allwefantasy@gmail.com)
- */
+  * 5/11/16 WilliamZhu(allwefantasy@gmail.com)
+  */
 class SparkRuntime(_params: JMap[Any, Any]) extends StreamingRuntime with PlatformManagerListener {
   self =>
 
@@ -38,6 +38,8 @@ class SparkRuntime(_params: JMap[Any, Any]) extends StreamingRuntime with Platfo
     }
 
     conf.setAppName(params.get("streaming.name").toString)
+    // idea上调试程序
+    conf.setMaster("local[2]")
 
     val tempContext = new SparkContext(conf)
     tempContext
@@ -85,15 +87,15 @@ object SparkRuntime {
   private val INSTANTIATION_LOCK = new Object()
 
   /**
-   * Reference to the last created SQLContext.
-   */
+    * Reference to the last created SQLContext.
+    */
   @transient private val lastInstantiatedContext = new AtomicReference[SparkRuntime]()
 
   /**
-   * Get the singleton SQLContext if it exists or create a new one using the given SparkContext.
-   * This function can be used to create a singleton SQLContext object that can be shared across
-   * the JVM.
-   */
+    * Get the singleton SQLContext if it exists or create a new one using the given SparkContext.
+    * This function can be used to create a singleton SQLContext object that can be shared across
+    * the JVM.
+    */
   def getOrCreate(params: JMap[Any, Any]): SparkRuntime = {
     INSTANTIATION_LOCK.synchronized {
       if (lastInstantiatedContext.get() == null) {

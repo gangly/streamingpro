@@ -44,6 +44,8 @@ class SparkStreamingRuntime(_params: JMap[Any, Any]) extends StreamingRuntime wi
   def createRuntime = {
 
     val conf = new SparkConf()
+    // 本地调试
+    conf.setMaster("local[2]")
     params.filter(f => f._1.toString.startsWith("spark.")).foreach { f =>
       conf.set(f._1.toString, f._2.toString)
     }
